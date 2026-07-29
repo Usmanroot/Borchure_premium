@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import React from 'react';
 import Btn3d from '../Buttons/Btn3d.jsx';
 
-export default function NavbarGaming() {
+export default function NavbarGaming({ streamerSlug = 'MOOCAPITANN' }) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const donationUrl = `https://streamlabs.com/${streamerSlug}/tip`;
 
   return (
     // ДОБАВИЛИ relative, чтобы мобильное меню (absolute) позиционировалось ровно относительно навбара
@@ -23,9 +26,9 @@ export default function NavbarGaming() {
 
         {/* ДЕСКТОПНАЯ КНОПКА (Убрали двойную ссылку <a> в <a>) */}
         <div className="hidden md:flex md:items-center md:gap-4">
-          <Btn3d variant='neon' onClick={() => window.location.hash = 'donate'}>
-            Donate
-          </Btn3d>
+          <a href={donationUrl} target="_blank" rel="noreferrer">
+            <Btn3d text='Donate' variant='neon' />
+          </a>
         </div>
 
         {/* БУРГЕР-КНОПКА */}

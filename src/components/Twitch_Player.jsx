@@ -2,12 +2,18 @@ import React, { useState, useEffect } from 'react';
 
 export default function Twitch_Player() {
   const streamerName = 'MOOCAPITANN';
-  const parentDomain = 'localhost';
-
+  
+  // 1. Автоматически берем текущий домен сайта
+  const [parentDomain, setParentDomain] = useState('');
   const [isLive, setIsLive] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Получаем хост браузера (например, "mysite.com" или "localhost")
+    if (typeof window !== 'undefined') {
+      setParentDomain(window.location.hostname);
+    }
+
     const img = new Image();
     img.src = `https://static-cdn.jtvnw.net/previews-ttv/live_user_${streamerName}-640x360.jpg?t=${new Date().getTime()}`;
 
@@ -32,13 +38,12 @@ export default function Twitch_Player() {
 
   return (
     <div className="w-full max-w-300 mx-auto py-30">
-      {isLive ? (
+      {isLive && parentDomain ? (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 w-full">
           <div className="md:col-span-3 group relative">
             <div className="absolute -inset-1 bg-linear-to-r from-purple-600 to-pink-600 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
 
             <div className="relative bg-black rounded-2xl overflow-hidden shadow-2xl border border-purple-500/30 aspect-video">
-
               <iframe
                 src={`https://player.twitch.tv/?channel=${streamerName}&parent=${parentDomain}&autoplay=true`}
                 className="w-full h-full"
@@ -47,18 +52,17 @@ export default function Twitch_Player() {
               ></iframe>
             </div>
           </div>
+          
           <div className="md:col-span-1 bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 shadow-2xl md:h-full min-h-100">
             <iframe
-              src={`https://www.twitch.tv/embed/${streamerName}/chat?parent=${parentDomain}&theme=light`}
+              src={`https://www.twitch.tv/embed/${streamerName}/chat?parent=${parentDomain}&theme=dark`}
               className="w-full h-full"
               title="Twitch Chat"
             ></iframe>
           </div>
-
         </div>
       ) : (
         <div className="relative bg-zinc-900/50 backdrop-blur-md rounded-2xl p-8 md:p-12 text-center border border-zinc-800 shadow-xl overflow-hidden group hover:border-zinc-700 transition-all duration-300 max-w-3xl mx-auto">
-
           <div className="absolute -top-10 -left-10 w-40 h-40 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-zinc-800 text-zinc-400 mb-4 group-hover:text-purple-400 transition-colors duration-300">
