@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 export default function Clips() {
   const clips = [
@@ -7,7 +7,14 @@ export default function Clips() {
     { id: "3", slug: "FairBlightedAlbatrossHassanChop-iuSH4Arnx4bA-VKg" },
   ]
 
-  const parentDomain = process.env.NODE_ENV === 'development' ? 'localhost' : 'yourdomain.com'
+  // Динамически получаем текущий домен сайта
+  const [parentDomain, setParentDomain] = useState('')
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setParentDomain(window.location.hostname)
+    }
+  }, [])
 
   return (
     <section className="py-12 px-4 flex flex-col items-center min-h-screen text-white">
@@ -17,22 +24,25 @@ export default function Clips() {
         </h1>
       </div>
 
-      {/* Увеличили общий контейнер сетки до 1700px */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 max-w-[1700px] w-full justify-items-center">
         {clips.map((clip) => (
           <div 
             key={clip.id} 
-            /* Увеличили ширину: от 380px на мобилках до 480px на больших экранах */
-            className="w-full sm:w-[420px] lg:w-[460px] aspect-[9/16] rounded-3xl overflow-hidden shadow-[0_0_35px_rgba(147,51,234,0.35)] border-2 border-purple-500/20 hover:border-purple-500/60 transition-all duration-300 hover:scale-[1.02] bg-zinc-900"
+            className="w-full sm:w-105 lg:w-115 aspect-9/16 rounded-3xl overflow-hidden shadow-[0_0_35px_rgba(147,51,234,0.35)] border-2 border-purple-500/20 hover:border-purple-500/60 transition-all duration-300 hover:scale-[1.02] bg-zinc-900"
           >
-            <iframe
-              className="w-full h-full object-cover"
-              src={`https://clips.twitch.tv/embed?clip=${clip.slug}&parent=${parentDomain}&autoplay=false`}
-              title="Twitch Clip"
-              height="100%"
-              width="100%"
-              allowFullScreen
-            ></iframe>
+            {/* Рендерим iframe только после того, как домен гарантированно определен */}
+            {parentDomain ? (
+              <iframe
+                className="w-full h-full object-cover"
+                src={`https://clips.twitch.tv/embed?clip=${clip.slug}&parent=${parentDomain}&autoplay=false`}
+                title="Twitch Clip"
+                height="100%"
+                width="100%"
+                allowFullScreen
+              ></iframe>
+            ) : (
+              <div className="w-full h-full animate-pulse bg-zinc-800" />
+            )}
           </div>
         ))}
       </div>
