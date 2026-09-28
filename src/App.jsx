@@ -47,9 +47,9 @@ export default function App() {
         <ScrollReveal variant="fade-up">
           <Milestones />
         </ScrollReveal>
-        <Analytics/>
       </div>
       <Footer />
+      <Analytics />
     </div>
   )
 }
