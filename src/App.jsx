@@ -9,6 +9,7 @@ import Merch from './components/Merch.jsx'
 import ScrollReveal from './components/ScrollReveal.jsx'
 import { Milestones } from './components/Milestones.jsx'
 import Footer from './components/Footer_gamer.jsx'
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App() {
   return (
@@ -46,6 +47,7 @@ export default function App() {
         <ScrollReveal variant="fade-up">
           <Milestones />
         </ScrollReveal>
+        <Analytics/>
       </div>
       <Footer />
     </div>
